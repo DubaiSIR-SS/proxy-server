@@ -22,7 +22,6 @@ const server = http.createServer((req, res) => {
   }
 
   const apiKey = req.headers["x-api-key"] || req.headers["X-Api-Key"];
-  console.log(apiKey, process.env.API_KEY);
   if (apiKey !== process.env.API_KEY) {
     res.writeHead(403, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ error: "Unauthorized" }));
@@ -50,7 +49,7 @@ const server = http.createServer((req, res) => {
           return;
         }
         console.log(`Proxying request to: ${targetUrl}`);
-        proxy.web(req, res, { target: targetUrl }, (err) => {
+        proxy.web(req, res, { target: targetUrl, secure: false }, (err) => {
           console.error(`Error proxying request: ${err.message}`);
           res.writeHead(502, { "Content-Type": "text/plain" });
           res.end("Bad Gateway");
@@ -69,7 +68,7 @@ const server = http.createServer((req, res) => {
   }
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Dynamic proxy server running at http://localhost:${PORT}`);
 });
