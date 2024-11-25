@@ -2,6 +2,8 @@ import http from "http";
 import httpProxy from "http-proxy";
 import isValidUrl from "./helpers/isValidUrl.mjs";
 import { allowedDomains } from "./helpers/constants.mjs";
+import dotenv from "dotenv";
+dotenv.config();
 
 const proxy = httpProxy.createProxyServer();
 const server = http.createServer((req, res) => {
