@@ -48,8 +48,13 @@ const server = http.createServer((req, res) => {
           res.end(JSON.stringify({ error: 'Missing "url" in request body' }));
           return;
         }
+
+        const targetHost = new URL(targetUrl).hostname;
+        delete req.headers["host"];
+        req.headers["host"] = targetHost;
+
         console.log(`Proxying request to: ${targetUrl}`);
-        proxy.web(req, res, { target: targetUrl, secure: false }, (err) => {
+        proxy.web(req, res, { target: targetUrl }, (err) => {
           console.error(`Error proxying request: ${err.message}`);
           res.writeHead(502, { "Content-Type": "text/plain" });
           res.end("Bad Gateway");
