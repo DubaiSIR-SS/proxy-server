@@ -20,6 +20,7 @@ const server = http.createServer((req, res) => {
   }
 
   const apiKey = req.headers["x-api-key"] || req.headers["X-Api-Key"];
+  console.log(apiKey, process.env.API_KEY);
   if (apiKey !== process.env.API_KEY) {
     res.writeHead(403, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ error: "Unauthorized" }));
